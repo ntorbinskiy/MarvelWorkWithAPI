@@ -30,6 +30,7 @@
         }
         &_selected {
             box-shadow: 0 5px 20px $main-color;
+            transition: 0.5s;
             transform: translateY(-8px);
         }
     }
