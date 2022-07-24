@@ -1,39 +1,30 @@
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AppHeader from "../appHeader/AppHeader";
-import RandomChar from "../randomChar/RandomChar";
-import CharList from "../charList/CharList";
-import CharInfo from "../charInfo/CharInfo";
-import { useState } from "react";
-import decoration from "../../resources/img/vision.png";
-import ErrorBoundary from "../errorBoundary/errorBoundary";
-import PropTypes from "prop-types";
+import Spinner from "../spinner/Spinner";
+
+const Page404 = lazy(() => import("../pages/404"));
+const MainPage = lazy(() => import("../pages/MainPage"));
+const ComicsPage = lazy(() => import("../pages/ComicsPage"));
+const SingleComicPage = lazy(() => import("../pages/SingleComicPage"));
 
 const App = () => {
-  const [selectedChar, setChar] = useState(null);
-
-  const onCharSelected = (id) => {
-    setChar(id);
-  };
   return (
-    <div className="app">
-      <AppHeader />
-      <main>
-        <ErrorBoundary>
-          <RandomChar />
-        </ErrorBoundary>
-        <div className="char__content">
-          <ErrorBoundary>
-            <CharList onCharSelected={onCharSelected} />
-          </ErrorBoundary>
-          <ErrorBoundary>
-            <CharInfo charId={selectedChar} />
-          </ErrorBoundary>
+    <Suspense fallback={<Spinner/>}>
+      <BrowserRouter>
+        <div className="app">
+          <AppHeader />
+          <main>
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/comics" element={<ComicsPage />} />
+              <Route path="*" element={<Page404 />} />
+              <Route path="/comics/:comicId" element={<SingleComicPage />} />
+            </Routes>
+          </main>
         </div>
-        <img className="bg-decoration" src={decoration} alt="vision" />
-      </main>
-    </div>
+      </BrowserRouter>
+    </Suspense>
   );
-};
-CharList.propTypes = {
-  onCharSelected: PropTypes.func.isRequired,
 };
 export default App;

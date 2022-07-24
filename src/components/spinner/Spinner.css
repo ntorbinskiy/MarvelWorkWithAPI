@@ -35,7 +35,7 @@ animation-delay: -0.5s;
 .loadingio-spinner-dual-ball-dmk7kqcu4gc {
 width: 200px;
 height: 200px;
-display: inline-block;
+display: block;
 overflow: hidden;
 background: #ffffff;
 }
